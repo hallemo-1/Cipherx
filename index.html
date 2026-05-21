@@ -34,7 +34,7 @@ async function register() {
     const username = document.getElementById("regUser").value;
     const password = document.getElementById("regPass").value;
 
-    const res = await fetch("http://localhost:3000/register", {
+    const res = await fetch("https://cipherx-production.up.railway.app", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ username, password })
@@ -49,7 +49,7 @@ async function login() {
     const username = document.getElementById("logUser").value;
     const password = document.getElementById("logPass").value;
 
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch("https://cipherx-production.up.railway.app", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ username, password })

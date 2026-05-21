@@ -47,7 +47,7 @@ async function sendMessage() {
     const message = document.getElementById("msg").value;
     const to = document.getElementById("toUser").value;
 
-    const res = await fetch("http://localhost:3000/send", {
+    const res = await fetch("https://cipherx-production.up.railway.app", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ async function sendMessage() {
 
 // get messages
 async function getMessages() {
-    const res = await fetch("http://localhost:3000/messages", {
+    const res = await fetch("https://cipherx-production.up.railway.app", {
         headers: { "Authorization": "Bearer " + token }
     });
 
