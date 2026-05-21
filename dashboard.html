@@ -47,13 +47,16 @@ async function sendMessage() {
     const message = document.getElementById("msg").value;
     const to = document.getElementById("toUser").value;
 
-    const res = await fetch("https://cipherx-production.up.railway.app", {
+    const res = await fetch("https://cipherx-production.up.railway.app/send", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
+            "Authorization": "Bearer " + localStorage.getItem("token")
         },
-        body: JSON.stringify({ message, to })
+          body: JSON.stringify({
+        message: msg,
+        to: receiver
+          })
     });
 
     const text = await res.text();
@@ -62,9 +65,11 @@ async function sendMessage() {
 
 // get messages
 async function getMessages() {
-    const res = await fetch("https://cipherx-production.up.railway.app", {
-        headers: { "Authorization": "Bearer " + token }
-    });
+    const res = fetch("https://cipherx-production.up.railway.app/messages", {
+    headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+    }
+});
 
     const data = await res.json();
 
