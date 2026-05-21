@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="topbar">
+    <span>⚡ CipherX Dashboard</span>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<div class="box">
+
+<h2>Send Message</h2>
+
+<input id="toUser" placeholder="Send to user">
+<input id="msg" placeholder="Write message">
+
+<button onclick="sendMessage()">Send</button>
+<button onclick="getMessages()">Show Messages</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html";
+}
+
+// logout
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "index.html";
+}
+
+// send message
+async function sendMessage() {
+    const message = document.getElementById("msg").value;
+    const to = document.getElementById("toUser").value;
+
+    const res = await fetch("http://localhost:3000/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ message, to })
+    });
+
+    const text = await res.text();
+    document.getElementById("result").innerText = text;
+}
+
+// get messages
+async function getMessages() {
+    const res = await fetch("http://localhost:3000/messages", {
+        headers: { "Authorization": "Bearer " + token }
+    });
+
+    const data = await res.json();
+
+    document.getElementById("result").innerHTML =
+        data.map(m => `<p>📩 From ${m.from}: ${m.message}</p>`).join("");
+}
+
+// auto refresh
+setInterval(getMessages, 3000);
+
+// MATRIX
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "01";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff00";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(draw, 33);
+
+</script>
+
+</body>
+</html>
