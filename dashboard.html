@@ -54,8 +54,8 @@ async function sendMessage() {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
           body: JSON.stringify({
-        message: msg,
-        to: receiver
+            message: message,
+            to: to
           })
     });
 
@@ -65,7 +65,7 @@ async function sendMessage() {
 
 // get messages
 async function getMessages() {
-    const res = fetch("https://cipherx-production.up.railway.app/messages", {
+    const res = await fetch("https://cipherx-production.up.railway.app/messages", {
     headers: {
         "Authorization": "Bearer " + localStorage.getItem("token")
     }
