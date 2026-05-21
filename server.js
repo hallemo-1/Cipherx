@@ -251,10 +251,9 @@ app.get("/messages", authenticateToken, (req, res) => {
     );
 });
 
-app.listen(PORT, () => {
-    console.log("Server running on port", PORT);
+ app.listen(PORT, () => {
+    console.log("Server شغال 🔥");
 });
-
 function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
 
