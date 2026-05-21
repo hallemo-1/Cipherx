@@ -23,7 +23,7 @@ function decrypt(text, shift = 3) {
 
 const app = express();
 app.use(express.static(__dirname));
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -251,9 +251,10 @@ app.get("/messages", authenticateToken, (req, res) => {
     );
 });
 
- app.listen(PORT, () => {
-    console.log("Server شغال 🔥");
+app.listen(PORT, () => {
+    console.log("Server running on port", PORT);
 });
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
 
